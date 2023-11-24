@@ -1,16 +1,13 @@
 import React, { useState } from "react";
 import { useParams } from 'react-router-dom';
 import styled from "styled-components";
-import back from './../img/backIcon.svg';
 import logo from './../img/mainLogo.svg';
+import pencil from './../img/pencil.svg';
+import BackNav from './../components/BackNav';
+import List from './../components/CatogoryList';
 
 const Container = styled.div`
   width: 100%;
-`
-
-const BackIcon = styled.img`
-  margin: 15px 0 0 15px;
-  cursor: pointer;
 `
 
 const DetailWrap = styled.div`
@@ -18,6 +15,11 @@ const DetailWrap = styled.div`
   display: flex;
   flex-direction: column;
   margin: 10px auto;
+`
+
+const CategoryTopWrap = styled.div`
+  display: flex;
+  justify-content: space-between;
 `
 
 const CategoryNameWrap = styled.div`
@@ -29,7 +31,6 @@ const CategoryNameWrap = styled.div`
   border-top-left-radius: 23px;
   border-top-right-radius: 23px;
   padding: 10px 15px;
-  
 `
 
 const Logo = styled.img`
@@ -43,16 +44,64 @@ const CategoryName = styled.h3`
   color: #FFB240;
 `
 
+const WriteButtonWrap = styled.div`
+  background-color: #FFF5E6;
+  padding: 10px;
+  border-radius: 15px;
+  cursor: pointer;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: fit-content;
+`
+
+const Pencil = styled.img`
+  width: 25px;
+`
+
+const CategoryListWrap = styled.div`
+  display: flex;
+  flex-direction: column;
+  background-color: #FFF5E6;
+  padding: 40px;
+  border-top-right-radius: 20px;
+  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;
+`
+
+const UnderLine = styled.div`
+  height: 1px;
+  background-color: black;
+  padding: 0 20px;
+  box-sizing: border-box;
+  margin: 30px 0;
+`
+
 const CategoryDetail = () => {
     let { category, id } = useParams();
     return(
         <Container>
-            <BackIcon src={back} />
+            <BackNav />
             <DetailWrap>
-                <CategoryNameWrap>
-                    <Logo src={logo} />
-                    <CategoryName>{ category }</CategoryName>
-                </CategoryNameWrap>
+                <CategoryTopWrap>
+                    <CategoryNameWrap>
+                        <Logo src={logo} />
+                        <CategoryName>{ category }</CategoryName>
+                    </CategoryNameWrap>
+                    <WriteButtonWrap>
+                        <Pencil src={pencil} />
+                    </WriteButtonWrap>
+                </CategoryTopWrap>
+                <CategoryListWrap>
+                    <List title='제목' content='내용입니다' />
+                    <UnderLine></UnderLine>
+                    <List title='제목' content='내용입니다' />
+                    <UnderLine></UnderLine>
+                    <List title='제목' content='내용입니다' />
+                    <UnderLine></UnderLine>
+                    <List title='제목' content='내용입니다' />
+                </CategoryListWrap>
             </DetailWrap>
         </Container>
     )
