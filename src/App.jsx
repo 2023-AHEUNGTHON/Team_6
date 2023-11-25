@@ -11,6 +11,7 @@ import DetailPost from "./pages/DetailPost";
 import Chat from "./pages/Chat";
 import ChatList from "./pages/ChatList";
 import Mainpage from "./pages/Mainpage/Mainpage";
+import FilterPage from "./pages/FilterPage/FilterPage"
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
       <Router>
         <ScrollToTop />
         <Routes>
+          <Route path="/Filterpage" element={<FilterPage />} />
           <Route path="/Mainpage" element={<Mainpage />} />
           <Route path="/" element={<Login />} />
           <Route path="/sign-up" element={<SignUp />} />
