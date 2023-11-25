@@ -7,10 +7,12 @@ import MyPage from "./pages/MyPage";
 import MyPageEdit from "./pages/MyPageEdit";
 import CategoryDetail from "./pages/CategoryDetail";
 import WritePost from "./pages/WritePost";
+import EditPost from "./pages/EditPost";
 import DetailPost from "./pages/DetailPost";
 import Chat from "./pages/Chat";
 import ChatList from "./pages/ChatList";
 import Mainpage from "./pages/Mainpage/Mainpage";
+import FilterPage from "./pages/FilterPage/FilterPage"
 
 function App() {
   return (
@@ -18,6 +20,7 @@ function App() {
       <Router>
         <ScrollToTop />
         <Routes>
+          <Route path="/Filterpage" element={<FilterPage />} />
           <Route path="/Mainpage" element={<Mainpage />} />
           <Route path="/" element={<Login />} />
           <Route path="/sign-up" element={<SignUp />} />
@@ -26,9 +29,11 @@ function App() {
 
           <Route path="/chat-list" element={<ChatList />} />
           <Route path="/chat" element={<Chat />} />
-          <Route path="/write-post" element={<WritePost />} />
-          <Route path="/post/:id" element={<DetailPost />} />
-          <Route path="/category/:category/:id" element={<CategoryDetail />} />
+
+          <Route path="/:category/write-post" element={<WritePost />} />
+          <Route path="/:category/edit-post/:id" element={<EditPost />} />
+          <Route path="/:category/:id" element={<DetailPost />} />
+          <Route path="/:category" element={<CategoryDetail />} />
         </Routes>
       </Router>
     </div>

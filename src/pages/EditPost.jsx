@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, {useEffect, useState} from "react";
 import { useParams, useNavigate } from 'react-router-dom';
 import styled from "styled-components";
 import BackNav from './../components/BackNav';
@@ -65,11 +65,22 @@ const CompleteButton = styled.button`
   font-size: 20px;
 `
 
-const WritePost = () => {
+const EditPost = () => {
     let { category, id } = useParams();
     const navigate = useNavigate();
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
+
+    useEffect(() => {
+        api.get("post/" + id)
+            .then(response => {
+                setTitle(response.data.post.title);
+                setContent(response.data.post.content);
+            })
+            .catch(error => {
+                alert('게시글을 가져올 수 없습니다.');
+            })
+    }, [])
 
     const handleTitleChange = (event) => {
         setTitle(event.target.value);
@@ -79,20 +90,20 @@ const WritePost = () => {
         setContent(event.target.value);
     }
 
-    function writePost(){
-        api.post("createpost/", {
+    function editPost(){
+        api.post("updatepost/", {
             'title' : title,
             'content': content,
             'category': category,
-            'id': 1
+            'id': id
         })
-        .then(response => {
-            alert('게시글 작성이 완료되었습니다.');
-            navigate(-1);
-        })
-        .catch(error => {
-            console.error('Error creating post:', error);
-        });
+            .then(response => {
+                alert('게시글 수정이 완료되었습니다.');
+                navigate(-1);
+            })
+            .catch(error => {
+                console.error('Error creating post:', error);
+            });
     }
 
     return(
@@ -115,11 +126,11 @@ const WritePost = () => {
                     placeholder='내용을 입력하세요'/>
             </InputWrap>
             <CompleteButtonWrap>
-                <CompleteButton onClick={writePost}>완료</CompleteButton>
+                <CompleteButton onClick={editPost}>수정</CompleteButton>
             </CompleteButtonWrap>
             <Footer />
         </Container>
     )
 }
 
-export default WritePost;
+export default EditPost;
