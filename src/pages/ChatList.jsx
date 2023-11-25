@@ -4,6 +4,7 @@ import BackNav from './../components/BackNav';
 import Nav from "../components/CommonNav";
 import Footer from './../components/Footer';
 import List from './../components/ChatList';
+import {useNavigate} from "react-router-dom";
 
 const Container = styled.div`
   width: 100%;
@@ -17,16 +18,17 @@ const ListWrap = styled.div`
 `
 
 const ChatList = () => {
+    const navigate = useNavigate();
     return(
         <Container>
             <Nav />
             <BackNav />
             <ListWrap>
-                <List newCheck='true' name='홍길동' content='내용인데 답장 좀'/>
-                <List newCheck='true' name='홍길동' content='내용인데 답장 좀'/>
-                <List newCheck='true' name='홍길동' content='내용인데 답장 좀'/>
-                <List newCheck='false' name='홍길동' content='내용인데 답장 좀'/>
-                <List newCheck='false' name='홍길동' content='내용인데 답장 좀'/>
+                <List newCheck='true' name='홍길동' content='내용인데 답장 좀' onClick={() => navigate('/chat')}/>
+                <List newCheck='true' name='홍길동' content='내용인데 답장 좀' onClick={() => navigate('/chat')}/>
+                <List newCheck='true' name='홍길동' content='내용인데 답장 좀' onClick={() => navigate('/chat')}/>
+                <List newCheck='true' name='홍길동' content='내용인데 답장 좀' onClick={() => navigate('/chat')}/>
+                <List newCheck='true' name='홍길동' content='내용인데 답장 좀' onClick={() => navigate('/chat')}/>
             </ListWrap>
             <Footer />
         </Container>

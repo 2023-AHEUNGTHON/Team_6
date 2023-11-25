@@ -17,6 +17,7 @@ const LeftListWrap = styled.div`
 const ListWrap = styled.div`
   display: flex;
   margin: 10px 0;
+  cursor: pointer;
 `
 
 const ProfileImg = styled.img`
@@ -46,11 +47,11 @@ const NewIcon = styled.img`
   
 `
 
-const ChatList = ({newCheck, name, content}) => {
+const ChatList = ({newCheck, name, content, onClick}) => {
     return(
         <>
             {newCheck == 'true' ?
-                <NewListWrap>
+                <NewListWrap onClick={onClick}>
                     <LeftListWrap>
                         <ProfileImg src={profile} />
                         <ContentWrap>
@@ -61,7 +62,7 @@ const ChatList = ({newCheck, name, content}) => {
                     <NewIcon src={newIcon} />
                 </NewListWrap>
                 :
-                <ListWrap>
+                <ListWrap onClick={onClick}>
                     <ProfileImg src={profile} />
                     <ContentWrap>
                         <Name>{name}</Name>
