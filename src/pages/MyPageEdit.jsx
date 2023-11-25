@@ -12,13 +12,15 @@ import { Navigate, useNavigate } from "react-router-dom";
 export default function MyPageEdit() {
   const navigate = useNavigate();
 
-  const [name, setName] = useState("홍길동");
-  const [major, setMajor] = useState("소프트웨어학부");
-  const [univ, setUniv] = useState("숭실대학교");
-  const [grade, setGrade] = useState("2학년 재학");
-  const [career, setCareer] = useState("Web");
-  const [project, setProject] = useState("Web");
-  const [date, setDate] = useState("2023년 11월 15일 ~ 2023년 11월 25일");
+  const [name, setName] = useState("");
+  const [major, setMajor] = useState("");
+  const [univ, setUniv] = useState("");
+  const [grade, setGrade] = useState("");
+  const [career, setCareer] = useState("");
+  const [project, setProject] = useState("");
+  const [date, setDate] = useState("");
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
 
   const [edit, setEdit] = useState(false);
   const [textAreaValue, setTextAreaValue] = useState("");
@@ -49,6 +51,10 @@ export default function MyPageEdit() {
       setMajor(userData.major);
       setUniv(userData.school);
       setGrade(userData.grade);
+      setCareer(userData.major);
+      setProject(userData.project);
+      setStartDate(userData.start_date);
+      setEndDate(userData.end_date);
     } catch (error) {
       console.error("Error fetching user data:", error);
     }
@@ -61,16 +67,19 @@ export default function MyPageEdit() {
     if (userId) {
       try {
         const response = await axios.post(
-          "https://port-0-team-6-be-cn1vmr2clpde5wws.sel5.cloudtype.app/userprofile", // 해당 엔드포인트를 사용하여 데이터를 전송해야 합니다.
+          "https://port-0-team-6-be-cn1vmr2clpde5wws.sel5.cloudtype.app/updateuserprofile/",
           {
             major: selectedCareer,
             project: selectedProject,
-            date: "20231125",
+            start_date: `${startDateYear}${startDateMonth}${startDateDay}`,
+            end_date: `${endDateYear}${endDateMonth}${endDateDay}`,
             id: userId,
           }
         );
 
         console.log("Profile updated:", response.data);
+        alert("수정 완료!");
+        navigate("/my-page");
       } catch (error) {
         console.error("Error updating profile:", error);
       }
