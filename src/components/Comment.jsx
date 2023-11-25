@@ -88,7 +88,6 @@ const Comment = ({name, comment, mine, id}) => {
                     <CommentContent>{ comment }</CommentContent>
                 </CommentBox>
                 <ButtonWrap>
-                    <EditBtn src={editBtn} />
                     <DeleteBtn src={deleteBtn} onClick={deleteComment}/>
                 </ButtonWrap>
             </CommentBigWrap>

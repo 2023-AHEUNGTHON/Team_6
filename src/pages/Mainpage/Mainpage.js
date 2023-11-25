@@ -32,7 +32,7 @@ function Mainpage(){
             <Nav />
             <div className="Mainpage">
                 <div className="logo_wrap">
-                    <img className="logo2" src={mainLogo}/>
+                    <img className="mainLogo" src={mainLogo}/>
                 </div>
                 <div className="search_wrap">
                     <div className="s_text">나와 맞는 팀원을 한번에 찾고 싶다면</div>
