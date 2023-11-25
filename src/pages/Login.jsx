@@ -28,8 +28,10 @@ export default function Login() {
       localStorage.setItem("refresh_token", refresh_token);
       localStorage.setItem("user_id", user_id);
 
+      console.log(response.data);
+
       alert("환영합니다!");
-      navigate("/my-page");
+      navigate("/mainpage");
     } catch (error) {
       console.error("Login failed:", error);
     }

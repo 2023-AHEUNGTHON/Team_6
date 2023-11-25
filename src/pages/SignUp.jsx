@@ -3,10 +3,11 @@ import styled from "styled-components";
 import DropDown from "../components/DropDown";
 import { useState, useEffect } from "react";
 import axios from "axios";
+import { Navigate, useNavigate } from "react-router-dom";
 
 // 회원가입 페이지
 export default function SignUp() {
-  // const apiUrl = process.env.REACT_APP_BASE_URL;
+  const navigate = useNavigate();
 
   // 학년
   const gradeOptions = [
@@ -224,9 +225,9 @@ export default function SignUp() {
       email: email,
       major: major,
       project: selectedProject,
-      student_id: "",
       password: pw,
-      available: `${startDateYear}-${startDateMonth}-${startDateDay}`, // 선택한 시작 날짜
+      start_date: `${startDateYear}${startDateMonth}${startDateDay}`,
+      end_date: `${endDateYear}${endDateMonth}${endDateDay}`,
     };
 
     console.log(userData);
@@ -235,6 +236,7 @@ export default function SignUp() {
       const response = await axios.post(apiUrl, userData);
       console.log("POST request successful:", response.data);
       alert("회원가입이 성공적으로 완료되었습니다!");
+      navigate("/");
     } catch (error) {
       console.log("Error response from server:", error.response.data);
       alert("회원가입에 실패했습니다. 다시 시도해주세요.");
