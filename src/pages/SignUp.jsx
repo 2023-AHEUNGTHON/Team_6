@@ -32,49 +32,42 @@ export default function SignUp() {
 
   // 진행 중인 프로젝트 분야
   const projectOptions = [
-    "기획(PM)",
-    "디자인",
-    "웹 프론트엔드",
-    "안드로이드",
+    "Product Manager",
+    "Design",
+    "Web",
+    "Android",
     "IOS",
-    "백엔드",
-    "마케팅",
-    "광고",
-    "영상",
-    "사진",
-    "작곡",
-    "작사",
-    "보컬",
-    "댄스",
-    "기타",
+    "Server",
+    "Marketing",
+    "Advertisement",
+    "Video",
+    "Photo",
+    "Composing",
+    "Lyric",
+    "Vocal",
+    "Dance",
+    "etc",
   ];
 
   // 나의 전공 분야
-  const majorOptions = [
-    "기획(PM)",
-    "디자인",
-    "웹 프론트엔드",
-    "안드로이드",
-    "IOS",
-    "백엔드",
-    "마케팅",
-    "광고",
-    "영상",
-    "사진",
-    "작곡",
-    "작사",
-    "보컬",
-    "댄스",
-    "기타",
+  const careerOptions = [
+    "IT",
+    "Design",
+    "Marketing",
+    "Advertisement",
+    "Media",
+    "Music",
+    "etc",
   ];
 
   const [name, setName] = useState("");
+  const [major, setMajor] = useState("");
   const [email, setEmail] = useState("");
 
   const [selectedGrade, setSelectedGrade] = useState(null);
   const [selectedUniv, setSelectedUniv] = useState(null);
   const [selectedProject, setSelectedProject] = useState(null);
-  const [selectedMajor, setSelectedMajor] = useState(null);
+  const [selectedCareer, setSelectedCareer] = useState(null);
 
   const [startDateYear, setStartDateYear] = useState("");
   const [startDateMonth, setStartDateMonth] = useState("");
@@ -189,14 +182,14 @@ export default function SignUp() {
 
   // 날짜 ----------------------------------------------------------------------------
 
-  // "선택완료" 버튼이 활성화되는지 여부를 결정하는 변수
+  // "가입하기" 버튼이 활성화되는지 여부를 결정하는 변수
   const isButtonDisabled =
     !name ||
     !email ||
     !selectedGrade ||
     !selectedUniv ||
     !selectedProject ||
-    !selectedMajor ||
+    !selectedCareer ||
     !startDateYear ||
     !startDateMonth ||
     !startDateDay ||
@@ -204,9 +197,13 @@ export default function SignUp() {
     !endDateMonth ||
     !endDateDay;
 
+  // "인증하기" 버튼 비활성화 여부
+  const certifyBtnDisabled = !email;
+
   //  선택한 정보를 userData 상태로 저장
   const [userData, setUserData] = useState({
     name: "",
+    major: "",
     email: "",
     grade: "",
     univ: "",
@@ -214,6 +211,7 @@ export default function SignUp() {
     email: "",
     startDate: "",
     endDate: "",
+    career: "",
   });
 
   return (
@@ -226,6 +224,15 @@ export default function SignUp() {
             placeholder="이름을 입력하세요"
             value={name}
             onChange={(e) => setName(e.target.value)}
+          ></input>
+        </div>
+        <div className="content-box">
+          <h3>전공</h3>
+          <input
+            className="inputName"
+            placeholder="전공을 입력하세요"
+            value={major}
+            onChange={(e) => setMajor(e.target.value)}
           ></input>
         </div>
         <div className="content-box">
@@ -257,15 +264,20 @@ export default function SignUp() {
             }}
           />
         </div>
-        <div className="content-box">
-          <h3>학교 이메일</h3>
-          <input
-            className="inputEmail"
-            placeholder="학교 이메일을 입력하세요"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          ></input>
+        <div className="email-line">
+          <div className="content-box">
+            <h3>학교 이메일</h3>
+            <input
+              className="inputEmail"
+              placeholder="학교 이메일을 입력하세요"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            ></input>
+          </div>
         </div>
+        <button className="certification-btn" disabled={certifyBtnDisabled}>
+          인증하기
+        </button>
       </div>
       <div className="matching-info">
         <div className="content-box">
@@ -337,22 +349,20 @@ export default function SignUp() {
         <div className="content-box">
           <h3>나의 전공 분야</h3>
           <DropDown
-            options={majorOptions}
+            options={careerOptions}
             defaultOption="전공 분야를 선택해주세요"
             isWide
             onSelect={(option) => {
-              setSelectedMajor(option);
+              setSelectedCareer(option);
               setUserData((prevUserData) => ({
                 ...prevUserData,
-                major: option,
+                career: option,
               }));
             }}
           />
         </div>
       </div>
-      <div className="personal-info">
-        <h1>개인정보 제공 동의 체크란</h1>
-      </div>
+
       <button className="sign-up-btn" disabled={isButtonDisabled}>
         가입하기
       </button>
@@ -381,13 +391,21 @@ const SignUpWrap = styled.div`
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
+    position: relative;
+
+    .email-line {
+      width: 491px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
   }
 
   .content-box {
     display: flex;
     flex-direction: column;
     gap: 15px;
-    margin-top: 20px;
+    margin-top: 40px;
 
     input {
       width: 205px;
@@ -407,6 +425,29 @@ const SignUpWrap = styled.div`
       &:focus {
         outline: none;
       }
+    }
+  }
+
+  .certification-btn {
+    width: 65px;
+    height: 35.787px;
+    background: #e0d6c7;
+    border-radius: 15px;
+    border: none;
+
+    position: absolute;
+    right: 65px;
+    bottom: 7px;
+
+    color: #fff8ee;
+    font-size: 11.685px;
+    font-style: normal;
+    font-weight: 800;
+    line-height: 11.008px;
+
+    &:disabled {
+      pointer-events: none;
+      opacity: 0.6;
     }
   }
 
@@ -440,31 +481,13 @@ const SignUpWrap = styled.div`
         border-radius: 46.184px;
         background: #fff4e3;
         text-align: center;
+        border: none;
       }
 
       span {
         margin-right: 6px;
         margin-left: 6px;
       }
-    }
-  }
-
-  .personal-info {
-    width: 345px;
-    height: 81px;
-    background: #d9d9d9;
-    padding: 16px 24px;
-    box-sizing: border-box;
-    text-align: center;
-    margin-top: 27px;
-
-    h1 {
-      font-size: 27.059px;
-      color: #fff;
-      font-style: normal;
-      font-weight: 800;
-      line-height: 9.308px;
-      margin-top: 18px;
     }
   }
 
@@ -475,7 +498,7 @@ const SignUpWrap = styled.div`
     background: #ffd686;
     border: none;
     text-align: center;
-    margin-top: 33px;
+    margin-top: 74px;
 
     color: #fff;
     font-size: 25px;

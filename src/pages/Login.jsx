@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import icon from "../img/icon.png";
+import icon from "../img/loginIcon.png";
 import logoText from "../img/univ-us.png";
 import { Navigate, useNavigate } from "react-router-dom";
 
@@ -49,7 +49,7 @@ const LoginWrap = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 100vh;
+  min-height: 100vh;
 
   .logo {
     display: flex;
