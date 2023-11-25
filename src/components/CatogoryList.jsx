@@ -5,6 +5,7 @@ const ListWrap = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
+  cursor: pointer;
 `
 
 const Title = styled.div`
@@ -18,9 +19,9 @@ const Content = styled.div`
   color: #6C6B6A;
 `
 
-const CategoryList = ({ title, content }) => {
+const CategoryList = ({ title, content, onClick }) => {
     return(
-        <ListWrap>
+        <ListWrap onClick={onClick}>
             <Title>{ title }</Title>
             <Content>{ content }</Content>
         </ListWrap>
