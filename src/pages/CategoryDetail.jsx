@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import styled from "styled-components";
 import logo from './../img/mainLogo.svg';
 import pencil from './../img/pencil.svg';
@@ -80,6 +80,8 @@ const UnderLine = styled.div`
 
 const CategoryDetail = () => {
     let { category, id } = useParams();
+    const navigate = useNavigate();
+
     return(
         <Container>
             <BackNav />
@@ -90,7 +92,7 @@ const CategoryDetail = () => {
                         <CategoryName>{ category }</CategoryName>
                     </CategoryNameWrap>
                     <WriteButtonWrap>
-                        <Pencil src={pencil} />
+                        <Pencil src={pencil} onClick={() => navigate('/write-post')}/>
                     </WriteButtonWrap>
                 </CategoryTopWrap>
                 <CategoryListWrap>

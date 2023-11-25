@@ -1,4 +1,5 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import back from './../img/backIcon.svg';
 
@@ -8,9 +9,10 @@ const BackIcon = styled.img`
 `
 
 const BackNav = () => {
+    const navigate = useNavigate();
     return(
         <>
-            <BackIcon src={back} />
+            <BackIcon src={back} onClick={() => navigate(-1)}/>
         </>
     )
 }
