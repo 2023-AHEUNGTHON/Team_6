@@ -1,10 +1,17 @@
-import React, { useState } from "react";
-import { useParams } from 'react-router-dom';
+import React, { useState, useEffect } from "react";
+import {useNavigate, useParams} from 'react-router-dom';
 import styled from "styled-components";
 import BackNav from './../components/BackNav';
+import Footer from './../components/Footer';
 import logo from "../img/mainLogo.svg";
 import profile from "../img/profile.svg";
 import chat from "../img/chatsvg.svg";
+import pencil from "../img/pencil.svg";
+import Comment from "../components/Comment";
+import Nav from "../components/CommonNav";
+import api from '../apis/api';
+import editBtn from './../img/editBtn.svg';
+import deleteBtn from './../img/deleteBtn.svg';
 
 const Container = styled.div`
   width: 100%;
@@ -14,7 +21,7 @@ const DetailWrap = styled.div`
   width: 80%;
   display: flex;
   flex-direction: column;
-  margin: 10px auto;
+  margin: 30px auto 50px auto;
 `
 
 const CategoryNameWrap = styled.div`
@@ -26,6 +33,10 @@ const CategoryNameWrap = styled.div`
   border-top-left-radius: 23px;
   border-top-right-radius: 23px;
   padding: 10px 15px;
+`
+
+const ProfileImg = styled.img`
+  width: 20px;
 `
 
 const Logo = styled.img`
@@ -64,10 +75,6 @@ const ProfileWrap = styled.div`
   padding: 10px 10px 10px 0;
 `
 
-const ProfileImg = styled.img`
-  width: 20px;
-`
-
 const ProfileName = styled.p`
   font-size: 20px;
   margin: 0 10px;
@@ -92,90 +99,147 @@ const CommentWrap = styled.div`
   margin-top: 20px;
 `
 
-const CommentBox = styled.div`
-  display: flex;
-  flex-direction: column;
-  padding: 20px 30px;
-`
-
-const MemberWrap = styled.div`
-  display: flex;
-  align-items: center;
-`
-
-const CommentProfileName = styled.p`
-  font-size: 20px;
-  font-weight: 700;
-  margin-left: 10px;
-`
-
-const Comment = styled.div`
-  font-weight: bolder;
-  margin-top: 10px;
-  font-size: 20px;
-`
-
-const CommentInput = styled.input`
-  margin: 20px auto;
+const CommentInputWrap = styled.div`
   width: 100%;
-  height: 60px;
-  font-size: 20px;
   border-radius: 10px;
   border: 0;
   padding: 10px 20px;
   box-sizing: border-box;
   background-color: #F3EADC;
-  background-image: url('../img/pencil.svg');
-  background-repeat: no-repeat;
-  background-position: right center;
-  background-size: 20px 20px; 
+  margin: 20px auto;
+  height: 60px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`
+
+const CommentInput = styled.input`
+  border: none;
+  height: 100%;
+  font-size: 20px;
+  background-color: transparent;
+  width: calc(100% - 50px);
+`
+
+const CommentBtn = styled.img`
+  cursor: pointer;
+  width: 30px;
+`
+
+const ButtonWrap = styled.div`
+  display: flex;
+  justify-content: flex-end;
+`
+
+const EditBtn = styled.img`
+  cursor: pointer;
+`
+
+const DeleteBtn = styled.img`
+  cursor: pointer;
+  margin-left: 15px;
 `
 
 const DetailPost = () => {
-    let { id } = useParams();
+    let { category, id } = useParams();
+    let userId = 1;
+    const navigate = useNavigate();
+    const [user, setUser] = useState('');
+    const [post, setPost] = useState([]);
+    const [comments, setComments] = useState([]);
+    const [comment, setComment] = useState('');
+
+    useEffect(() => {
+        api.get("post/" + id)
+            .then(response => {
+                setPost(response.data.post);
+                setComments(response.data.comment);
+                setUser(response.data.user);
+            })
+            .catch(error => {
+                alert('게시글을 가져올 수 없습니다.');
+            })
+    }, [])
+
+    const handleOnKeyPress = (event) => {
+        if (event.key === 'Enter') {
+            createComment();
+        }
+    };
+
+    const handleCommentChange = (event) => {
+        setComment(event.target.value);
+    }
+
+    function createComment(){
+        api.post("createcomment/", {
+            "content" : comment,
+            "user_id" : "1",
+            "post_id" : id
+        }).then(response => {
+            alert('댓글을 작성하였습니다.');
+            window.location.reload();
+        }).catch(error => {
+            alert('댓글을 작성할 수 없습니다.');
+        })
+    }
+
+    function deletePost(){
+        api.post("deletepost/", {
+            'id': id
+        }).then(response => {
+            alert('게시물이 삭제되었습니다.');
+            navigate(-1);
+        }).catch(error => {
+            alert('게시물을 삭제할 수 없습니다.');
+        })
+    }
 
     return(
         <Container>
+            <Nav />
             <BackNav />
             <DetailWrap>
                 <CategoryNameWrap>
                     <Logo src={logo} />
-                    <CategoryName>WEB</CategoryName>
+                    <CategoryName>{ post.category }</CategoryName>
                 </CategoryNameWrap>
                 <DetailTitleWrap>
-                    <Title>제목</Title>
+                    <Title>{ post.title }</Title>
                     <ProfileWrap>
                         <ProfileImg src={profile} />
-                        <ProfileName>홍길동</ProfileName>
+                        <ProfileName>{ user.username }</ProfileName>
                         <ChatImg src={chat} />
                     </ProfileWrap>
-                    <Content>내용</Content>
+                    <Content>{ post.content }</Content>
+                    { user.id === post.user ?
+                        <ButtonWrap>
+                            <EditBtn src={editBtn} onClick={() => navigate(`/${category}/edit-post/${post.id}`)}/>
+                            <DeleteBtn src={deleteBtn} onClick={deletePost}/>
+                        </ButtonWrap>
+                        : <></>
+                    }
                 </DetailTitleWrap>
                 <CommentWrap>
-                    <CommentBox>
-                        <MemberWrap>
-                            <ProfileImg src={profile} />
-                            <CommentProfileName>홍길동</CommentProfileName>
-                        </MemberWrap>
-                        <Comment>댓글입니댱</Comment>
-                    </CommentBox>
-                    <CommentBox>
-                        <MemberWrap>
-                            <ProfileImg src={profile} />
-                            <CommentProfileName>홍길동</CommentProfileName>
-                        </MemberWrap>
-                        <Comment>댓글입니댱</Comment>
-                    </CommentBox>
-                    <CommentBox>
-                        <MemberWrap>
-                            <ProfileImg src={profile} />
-                            <CommentProfileName>홍길동</CommentProfileName>
-                        </MemberWrap>
-                        <Comment>댓글입니댱</Comment>
-                    </CommentBox>
+                    {
+                        comments.map((comment, idx) => (
+                            user.id === comment.user ?
+                                <Comment key={idx} name='홍길동' comment={comment.content} mine='true' id={comment.id}/> :
+                                <Comment key={idx} name='홍길동' comment={comment.content} mine='false' id={comment.id}/>
+                        ))
+                    }
                 </CommentWrap>
-                <CommentInput placeholder='댓글을 입력해주세요'/>
+                <CommentInputWrap>
+                    <CommentInput
+                        type="text"
+                        value={comment}
+                        onChange={handleCommentChange}
+                        onKeyPress={handleOnKeyPress}
+                        placeholder='댓글을 입력해주세요'/>
+                    <CommentBtn src={pencil} onClick={createComment}/>
+                </CommentInputWrap>
             </DetailWrap>
+            <Footer />
         </Container>
     )
 }
