@@ -20,9 +20,9 @@ const UserName = styled.h3`
 const ChatWrap = styled.div`
   display: flex;
   flex-direction: column;
-  width: 70%;
+  width: 60%;
   margin: 0 auto;
-  height: calc(100vh - 180px);
+  height: calc(100vh - 260px);
   overflow: scroll;
 `
 

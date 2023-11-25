@@ -6,12 +6,17 @@ import profileImg from '../../img/profile2.png';
 import chat from '../../img/chat.png';
 import btn from '../../img/go-back-btn.png';
 import profileImg2 from '../../img/profile-img.png';
+import {useNavigate} from "react-router-dom";
+import Nav from "./../../components/CommonNav";
+import Footer from "./../../components/Footer";
 
 
 function FilterPage(){
+    const navigate = useNavigate();
     const [modalVisible, setModalVisible] = useState(false);
     return(
         <div className="FilterPage">
+            <Nav />
             <div >
                 <img class="btn" src={btn}/>
             </div>
@@ -129,7 +134,7 @@ function FilterPage(){
                     <div><img class="m_img2" src={profileImg2}/></div>
                     <div class="m_content">SSU LikeLion 11th FE</div>
                 </div>
-                <div >
+                <div class="m_wrap_content">
                     <div>
                         <div class="m_text0">이름 : 홍길동</div>
                         <div class="m_text0">전공 분야(직무) : Web</div>
@@ -145,14 +150,15 @@ function FilterPage(){
                     
                     <div class="m_text0">학년 :  3학년 2학기 재학</div>
                 </div>
+                <div class="buttonWrap">
+                    <button type="button" className="chatBtn" onClick={() => navigate('/chat')}>채팅하기</button>
+                </div>
             </div>
             </div>
         )}
-
-            
-            
+            <div class='participate'></div>
+            <Footer />
         </div>
-
 
     );
 
