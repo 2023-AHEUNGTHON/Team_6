@@ -7,6 +7,7 @@ import MyPage from "./pages/MyPage";
 import MyPageEdit from "./pages/MyPageEdit";
 import CategoryDetail from "./pages/CategoryDetail";
 import WritePost from "./pages/WritePost";
+import EditPost from "./pages/EditPost";
 import DetailPost from "./pages/DetailPost";
 import Chat from "./pages/Chat";
 import ChatList from "./pages/ChatList";
@@ -28,6 +29,7 @@ function App() {
           <Route path="/chat" element={<Chat />} />
 
           <Route path="/:category/write-post" element={<WritePost />} />
+          <Route path="/:category/edit-post/:id" element={<EditPost />} />
           <Route path="/:category/:id" element={<DetailPost />} />
           <Route path="/:category" element={<CategoryDetail />} />
         </Routes>
