@@ -3,12 +3,37 @@ import styled from "styled-components";
 import icon from "../img/loginIcon.png";
 import logoText from "../img/univ-us.png";
 import { Navigate, useNavigate } from "react-router-dom";
+import axios from "axios";
 
 // 로그인 페이지
 export default function Login() {
   const navigate = useNavigate();
   const [id, setId] = useState("");
   const [pw, setPw] = useState("");
+
+  // 로그인 (post)
+  const handleLogin = async () => {
+    try {
+      const response = await axios.post(
+        "https://port-0-team-6-be-cn1vmr2clpde5wws.sel5.cloudtype.app/login/",
+        {
+          email: id,
+          password: pw,
+        }
+      );
+
+      const { access_token, refresh_token, user_id } = response.data;
+
+      localStorage.setItem("access_token", access_token);
+      localStorage.setItem("refresh_token", refresh_token);
+      localStorage.setItem("user_id", user_id);
+
+      alert("환영합니다!");
+      navigate("/my-page");
+    } catch (error) {
+      console.error("Login failed:", error);
+    }
+  };
 
   return (
     <LoginWrap>
@@ -29,7 +54,9 @@ export default function Login() {
         value={pw}
         onChange={(e) => setPw(e.target.value)}
       ></input>
-      <button className="login-btn">로그인</button>
+      <button className="login-btn" onClick={handleLogin}>
+        로그인
+      </button>
       <div className="sign-up">
         <p>아직 회원이 아니시라면</p>
         <h4

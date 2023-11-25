@@ -2,19 +2,30 @@ import React from "react";
 import styled from "styled-components";
 import DropDown from "../components/DropDown";
 import { useState, useEffect } from "react";
+import axios from "axios";
 
 // 회원가입 페이지
 export default function SignUp() {
+  // const apiUrl = process.env.REACT_APP_BASE_URL;
+
   // 학년
   const gradeOptions = [
-    "1학년 재학",
-    "1학년 휴학",
-    "2학년 재학",
-    "2학년 휴학",
-    "3학년 재학",
-    "3학년 휴학",
-    "4학년 재학",
-    "4학년 휴학",
+    "1학년 1학기 재학",
+    "1학년 1학기 휴학",
+    "1학년 2학기 재학",
+    "1학년 2학기 휴학",
+    "2학년 1학기 재학",
+    "2학년 1학기 휴학",
+    "2학년 2학기 재학",
+    "2학년 2학기 휴학",
+    "3학년 1학기 재학",
+    "3학년 1학기 휴학",
+    "3학년 2학기 재학",
+    "3학년 2학기 휴학",
+    "4학년 1학기 재학",
+    "4학년 1학기 휴학",
+    "4학년 2학기 재학",
+    "4학년 2학기 휴학",
   ];
 
   // 학교(어흥 올림픽 참여)
@@ -63,6 +74,7 @@ export default function SignUp() {
   const [name, setName] = useState("");
   const [major, setMajor] = useState("");
   const [email, setEmail] = useState("");
+  const [pw, setPw] = useState("");
 
   const [selectedGrade, setSelectedGrade] = useState(null);
   const [selectedUniv, setSelectedUniv] = useState(null);
@@ -200,19 +212,34 @@ export default function SignUp() {
   // "인증하기" 버튼 비활성화 여부
   const certifyBtnDisabled = !email;
 
-  //  선택한 정보를 userData 상태로 저장
-  const [userData, setUserData] = useState({
-    name: "",
-    major: "",
-    email: "",
-    grade: "",
-    univ: "",
-    project: "",
-    email: "",
-    startDate: "",
-    endDate: "",
-    career: "",
-  });
+  // 회원가입(POST)
+  const handleSubmit = async () => {
+    const apiUrl =
+      "https://port-0-team-6-be-cn1vmr2clpde5wws.sel5.cloudtype.app/register/";
+
+    const userData = {
+      username: name,
+      grade: selectedGrade,
+      school: selectedUniv,
+      email: email,
+      major: major,
+      project: selectedProject,
+      student_id: "",
+      password: pw,
+      available: `${startDateYear}-${startDateMonth}-${startDateDay}`, // 선택한 시작 날짜
+    };
+
+    console.log(userData);
+
+    try {
+      const response = await axios.post(apiUrl, userData);
+      console.log("POST request successful:", response.data);
+      alert("회원가입이 성공적으로 완료되었습니다!");
+    } catch (error) {
+      console.log("Error response from server:", error.response.data);
+      alert("회원가입에 실패했습니다. 다시 시도해주세요.");
+    }
+  };
 
   return (
     <SignUpWrap>
@@ -227,13 +254,23 @@ export default function SignUp() {
           ></input>
         </div>
         <div className="content-box">
-          <h3>전공</h3>
+          <h3>비밀번호</h3>
           <input
-            className="inputName"
-            placeholder="전공을 입력하세요"
-            value={major}
-            onChange={(e) => setMajor(e.target.value)}
+            className="inputPw"
+            placeholder="비밀번호 입력하세요"
+            value={pw}
+            onChange={(e) => setPw(e.target.value)}
           ></input>
+        </div>
+        <div className="content-box">
+          <h3>학교</h3>
+          <DropDown
+            options={univOptions}
+            defaultOption="학교를 선택해주세요"
+            onSelect={(option) => {
+              setSelectedUniv(option);
+            }}
+          />
         </div>
         <div className="content-box">
           <h3>학년</h3>
@@ -243,38 +280,28 @@ export default function SignUp() {
             // 옵션 선택 시 선택한 옵션을 상태로 업데이트
             onSelect={(option) => {
               setSelectedGrade(option);
-              setUserData((prevUserData) => ({
-                ...prevUserData,
-                grade: option,
-              }));
             }}
           />
         </div>
         <div className="content-box">
-          <h3>학교</h3>
-          <DropDown
-            options={univOptions}
-            defaultOption="학교를 선택해주세요"
-            onSelect={(option) => {
-              setSelectedUniv(option);
-              setUserData((prevUserData) => ({
-                ...prevUserData,
-                univ: option,
-              }));
-            }}
-          />
+          <h3>전공</h3>
+          <input
+            className="inputName"
+            placeholder="전공을 입력하세요"
+            value={major}
+            onChange={(e) => setMajor(e.target.value)}
+          ></input>
         </div>
-        <div className="email-line">
-          <div className="content-box">
-            <h3>학교 이메일</h3>
-            <input
-              className="inputEmail"
-              placeholder="학교 이메일을 입력하세요"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            ></input>
-          </div>
+        <div className="content-box">
+          <h3>학교 이메일</h3>
+          <input
+            className="inputEmail"
+            placeholder="학교 이메일을 입력하세요"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          ></input>
         </div>
+
         <button className="certification-btn" disabled={certifyBtnDisabled}>
           인증하기
         </button>
@@ -288,10 +315,6 @@ export default function SignUp() {
             isWide
             onSelect={(option) => {
               setSelectedProject(option);
-              setUserData((prevUserData) => ({
-                ...prevUserData,
-                project: option,
-              }));
             }}
           />
         </div>
@@ -354,16 +377,16 @@ export default function SignUp() {
             isWide
             onSelect={(option) => {
               setSelectedCareer(option);
-              setUserData((prevUserData) => ({
-                ...prevUserData,
-                career: option,
-              }));
             }}
           />
         </div>
       </div>
 
-      <button className="sign-up-btn" disabled={isButtonDisabled}>
+      <button
+        className="sign-up-btn"
+        disabled={isButtonDisabled}
+        onClick={handleSubmit}
+      >
         가입하기
       </button>
     </SignUpWrap>
@@ -392,13 +415,6 @@ const SignUpWrap = styled.div`
     flex-wrap: wrap;
     justify-content: space-between;
     position: relative;
-
-    .email-line {
-      width: 491px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
   }
 
   .content-box {
@@ -436,7 +452,7 @@ const SignUpWrap = styled.div`
     border: none;
 
     position: absolute;
-    right: 65px;
+    right: -90px;
     bottom: 7px;
 
     color: #fff8ee;
