@@ -27,40 +27,32 @@ export default function MyPageEdit() {
 
   // 진행 중인 프로젝트 분야
   const projectOptions = [
-    "기획(PM)",
-    "디자인",
-    "웹 프론트엔드",
-    "안드로이드",
+    "Product Manager",
+    "Design",
+    "Web",
+    "Android",
     "IOS",
-    "백엔드",
-    "마케팅",
-    "광고",
-    "영상",
-    "사진",
-    "작곡",
-    "작사",
-    "보컬",
-    "댄스",
-    "기타",
+    "Server",
+    "Marketing",
+    "Advertisement",
+    "Video",
+    "Photo",
+    "Composing",
+    "Lyric",
+    "Vocal",
+    "Dance",
+    "etc",
   ];
 
-  // 전공 분야(직무)
+  // 전공 분야
   const careerOptions = [
-    "기획(PM)",
-    "디자인",
-    "웹 프론트엔드",
-    "안드로이드",
-    "IOS",
-    "백엔드",
-    "마케팅",
-    "광고",
-    "영상",
-    "사진",
-    "작곡",
-    "작사",
-    "보컬",
-    "댄스",
-    "기타",
+    "IT",
+    "Design",
+    "Marketing",
+    "Advertisement",
+    "Media",
+    "Music",
+    "etc",
   ];
 
   //  선택한 정보를 userData 상태로 저장
