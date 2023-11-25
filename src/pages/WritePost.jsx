@@ -1,7 +1,11 @@
 import React, { useState } from "react";
+import { useParams, useNavigate } from 'react-router-dom';
 import styled from "styled-components";
 import BackNav from './../components/BackNav';
 import mainLogo from './../img/mainLogo2.svg';
+import Footer from './../components/Footer';
+import Nav from "../components/CommonNav";
+import api from '../apis/api';
 
 const Container = styled.div`
   width: 100%;
@@ -46,7 +50,7 @@ const CompleteButtonWrap = styled.div`
   display: flex;
   justify-content: flex-end;
   width: 85%;
-  margin: 20px auto 0 auto;
+  margin: 20px auto 50px auto;
 `
 
 const CompleteButton = styled.button`
@@ -62,19 +66,58 @@ const CompleteButton = styled.button`
 `
 
 const WritePost = () => {
+    let { category, id } = useParams();
+    const navigate = useNavigate();
+    const [title, setTitle] = useState('');
+    const [content, setContent] = useState('');
+
+    const handleTitleChange = (event) => {
+        setTitle(event.target.value);
+    }
+
+    const handleContentChange = (event) => {
+        setContent(event.target.value);
+    }
+
+    function writePost(){
+        api.post("createpost/", {
+            'title' : title,
+            'content': content,
+            'category': category,
+            'id': 1
+        })
+        .then(response => {
+            alert('게시글 작성이 완료되었습니다.');
+            navigate(-1);
+        })
+        .catch(error => {
+            console.error('Error creating post:', error);
+        });
+    }
+
     return(
         <Container>
+            <Nav />
             <BackNav />
             <MainLogoWrap>
                 <MainLogo src={mainLogo} />
             </MainLogoWrap>
             <InputWrap>
-                <TitleInput placeholder='제목을 입력하세요'/>
-                <ContentInput placeholder='내용을 입력하세요'/>
+                <TitleInput
+                    type="text"
+                    value={title}
+                    onChange={handleTitleChange}
+                    placeholder='제목을 입력하세요'/>
+                <ContentInput
+                    type="text"
+                    value={content}
+                    onChange={handleContentChange}
+                    placeholder='내용을 입력하세요'/>
             </InputWrap>
             <CompleteButtonWrap>
-                <CompleteButton>완료</CompleteButton>
+                <CompleteButton onClick={writePost}>완료</CompleteButton>
             </CompleteButtonWrap>
+            <Footer />
         </Container>
     )
 }

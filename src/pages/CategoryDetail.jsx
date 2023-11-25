@@ -1,10 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from 'react-router-dom';
 import styled from "styled-components";
 import logo from './../img/mainLogo.svg';
 import pencil from './../img/pencil.svg';
 import BackNav from './../components/BackNav';
 import List from './../components/CatogoryList';
+import Nav from "../components/CommonNav";
+import Footer from './../components/Footer';
+import api from './../apis/api';
 
 const Container = styled.div`
   width: 100%;
@@ -14,7 +17,7 @@ const DetailWrap = styled.div`
   width: 80%;
   display: flex;
   flex-direction: column;
-  margin: 10px auto;
+  margin: 10px auto 50px auto;
 `
 
 const CategoryTopWrap = styled.div`
@@ -79,11 +82,25 @@ const UnderLine = styled.div`
 `
 
 const CategoryDetail = () => {
-    let { category, id } = useParams();
+    let { category } = useParams();
+    // let id = 1;
     const navigate = useNavigate();
+
+    const [data, setData] = useState([]);
+
+    useEffect(() => {
+        api.get("readpost/",{ 'category' : category })
+            .then(response => {
+                setData(response.data);
+            })
+            .catch(error => {
+                alert('dㅔ러 ㅂ라생   ㅋㅋ')
+            })
+    }, [])
 
     return(
         <Container>
+            <Nav />
             <BackNav />
             <DetailWrap>
                 <CategoryTopWrap>
@@ -92,19 +109,34 @@ const CategoryDetail = () => {
                         <CategoryName>{ category }</CategoryName>
                     </CategoryNameWrap>
                     <WriteButtonWrap>
-                        <Pencil src={pencil} onClick={() => navigate('/write-post')}/>
+                        <Pencil src={pencil} onClick={() => navigate(`/${category}/write-post`)} />
                     </WriteButtonWrap>
                 </CategoryTopWrap>
                 <CategoryListWrap>
-                    <List title='제목' content='내용입니다' />
-                    <UnderLine></UnderLine>
-                    <List title='제목' content='내용입니다' />
-                    <UnderLine></UnderLine>
-                    <List title='제목' content='내용입니다' />
-                    <UnderLine></UnderLine>
-                    <List title='제목' content='내용입니다' />
+                    {data.map((list, idx) => (
+                        idx !== 0 ? (
+                            <React.Fragment key={list.id}>
+                                <UnderLine></UnderLine>
+                                <List
+                                    key={list.id}
+                                    title={list.title}
+                                    content={list.content}
+                                    onClick={() => navigate(`/${category}/${list.id}`)}
+                                />
+                            </React.Fragment>
+                        ) : (
+                            <List
+                                key={list.id}
+                                title={list.title}
+                                content={list.content}
+                                onClick={() => navigate(`/${category}/${list.id}`)}
+                            />
+                        )
+                    ))}
                 </CategoryListWrap>
+
             </DetailWrap>
+            <Footer />
         </Container>
     )
 }

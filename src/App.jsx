@@ -26,9 +26,10 @@ function App() {
 
           <Route path="/chat-list" element={<ChatList />} />
           <Route path="/chat" element={<Chat />} />
-          <Route path="/write-post" element={<WritePost />} />
-          <Route path="/post/:id" element={<DetailPost />} />
-          <Route path="/category/:category/:id" element={<CategoryDetail />} />
+
+          <Route path="/:category/write-post" element={<WritePost />} />
+          <Route path="/:category/:id" element={<DetailPost />} />
+          <Route path="/:category" element={<CategoryDetail />} />
         </Routes>
       </Router>
     </div>

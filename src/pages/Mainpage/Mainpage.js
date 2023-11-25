@@ -1,6 +1,6 @@
 import React from 'react';
 import './Mainpage.css';
-import logo1 from '../../img/icon.png';
+// import logo1 from '../../img/icon.png';
 import logo2 from '../../img/univ-us.png';
 import Polygon from '../../img/Polygon.png';
 
@@ -8,7 +8,7 @@ function Mainpage(){
     return(
         <div className="Mainpage">
             <div class="logo_wrap">
-                <img class="logo1" src={logo1}/>
+                {/*<img class="logo1" src={logo1}/>*/}
                 <img class="logo2" src={logo2}/>
             </div>
             <div class="search_wrap">
