@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from 'react-router-dom';
+import {useNavigate, useParams} from 'react-router-dom';
 import styled from "styled-components";
 import BackNav from './../components/BackNav';
 import Footer from './../components/Footer';
@@ -10,6 +10,8 @@ import pencil from "../img/pencil.svg";
 import Comment from "../components/Comment";
 import Nav from "../components/CommonNav";
 import api from '../apis/api';
+import editBtn from './../img/editBtn.svg';
+import deleteBtn from './../img/deleteBtn.svg';
 
 const Container = styled.div`
   width: 100%;
@@ -124,8 +126,25 @@ const CommentBtn = styled.img`
   width: 30px;
 `
 
+const ButtonWrap = styled.div`
+  display: flex;
+  justify-content: flex-end;
+`
+
+const EditBtn = styled.img`
+  cursor: pointer;
+`
+
+const DeleteBtn = styled.img`
+  cursor: pointer;
+  margin-left: 15px;
+`
+
 const DetailPost = () => {
     let { category, id } = useParams();
+    let userId = 1;
+    const navigate = useNavigate();
+    const [user, setUser] = useState('');
     const [post, setPost] = useState([]);
     const [comments, setComments] = useState([]);
     const [comment, setComment] = useState('');
@@ -135,6 +154,7 @@ const DetailPost = () => {
             .then(response => {
                 setPost(response.data.post);
                 setComments(response.data.comment);
+                setUser(response.data.user);
             })
             .catch(error => {
                 alert('게시글을 가져올 수 없습니다.');
@@ -164,6 +184,17 @@ const DetailPost = () => {
         })
     }
 
+    function deletePost(){
+        api.post("deletepost/", {
+            'id': id
+        }).then(response => {
+            alert('게시물이 삭제되었습니다.');
+            navigate(-1);
+        }).catch(error => {
+            alert('게시물을 삭제할 수 없습니다.');
+        })
+    }
+
     return(
         <Container>
             <Nav />
@@ -177,15 +208,24 @@ const DetailPost = () => {
                     <Title>{ post.title }</Title>
                     <ProfileWrap>
                         <ProfileImg src={profile} />
-                        <ProfileName>{ post.user }</ProfileName>
+                        <ProfileName>{ user.username }</ProfileName>
                         <ChatImg src={chat} />
                     </ProfileWrap>
                     <Content>{ post.content }</Content>
+                    { user.id === post.user ?
+                        <ButtonWrap>
+                            <EditBtn src={editBtn} onClick={() => navigate(`/${category}/edit-post/${post.id}`)}/>
+                            <DeleteBtn src={deleteBtn} onClick={deletePost}/>
+                        </ButtonWrap>
+                        : <></>
+                    }
                 </DetailTitleWrap>
                 <CommentWrap>
                     {
                         comments.map((comment, idx) => (
-                            <Comment  name='홍길동' comment={comment.content} />
+                            user.id === comment.user ?
+                                <Comment key={idx} name='홍길동' comment={comment.content} mine='true' id={comment.id}/> :
+                                <Comment key={idx} name='홍길동' comment={comment.content} mine='false' id={comment.id}/>
                         ))
                     }
                 </CommentWrap>
