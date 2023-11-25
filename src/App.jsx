@@ -10,6 +10,7 @@ import WritePost from "./pages/WritePost";
 import DetailPost from "./pages/DetailPost";
 import Chat from "./pages/Chat";
 import ChatList from "./pages/ChatList";
+import Mainpage from "./pages/Mainpage/Mainpage";
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
       <Router>
         <ScrollToTop />
         <Routes>
+          <Route path="/Mainpage" element={<Mainpage />} />
           <Route path="/" element={<Login />} />
           <Route path="/sign-up" element={<SignUp />} />
           <Route path="/my-page" element={<MyPage />} />
