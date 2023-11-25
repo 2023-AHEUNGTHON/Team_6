@@ -1,12 +1,12 @@
 import React from 'react';
-import './Mypage.css';
+import './Mainpage.css';
 import logo1 from '../../img/icon.png';
 import logo2 from '../../img/univ-us.png';
 import Polygon from '../../img/Polygon.png';
 
-function Mypage(){
+function Mainpage(){
     return(
-        <div className="Mypage">
+        <div className="Mainpage">
             <div class="logo_wrap">
                 <img class="logo1" src={logo1}/>
                 <img class="logo2" src={logo2}/>
@@ -41,4 +41,4 @@ function Mypage(){
     )
 }
 
-export default Mypage;
+export default Mainpage;
