@@ -11,18 +11,20 @@ import { Navigate, useNavigate } from "react-router-dom";
 // 마이페이지
 export default function MyPage() {
   const navigate = useNavigate();
-  const [name, setName] = useState("홍길동");
-  const [major, setMajor] = useState("소프트웨어학부");
-  const [univ, setUniv] = useState("숭실대학교");
-  const [grade, setGrade] = useState("2학년 재학");
-  const [career, setCareer] = useState("Web");
-  const [project, setProject] = useState("Web");
-  const [date, setDate] = useState("2023년 11월 15일 ~ 2023년 11월 25일");
+  const [name, setName] = useState("");
+  const [major, setMajor] = useState("");
+  const [univ, setUniv] = useState("");
+  const [grade, setGrade] = useState("");
+  const [career, setCareer] = useState("");
+  const [project, setProject] = useState("");
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
 
   useEffect(() => {
     const userId = localStorage.getItem("user_id");
     if (userId) {
       fetchUserData(userId);
+      console.log(userId);
     }
   }, []);
 
@@ -43,7 +45,8 @@ export default function MyPage() {
       setGrade(userData.grade);
       setCareer(userData.major);
       setProject(userData.project);
-      setDate(userData.available);
+      setStartDate(userData.start_date);
+      setEndDate(userData.end_date);
     } catch (error) {
       console.error("Error fetching user data:", error);
     }
@@ -83,7 +86,9 @@ export default function MyPage() {
           <p>진행 중인 프로젝트 분야 : {project}</p>
           <div>
             <p>프로젝트 진행 가능 날짜</p>
-            <p>: {date}</p>
+            <p>
+              : {startDate} ~ {endDate}
+            </p>
           </div>
         </div>
         <button className="logout-btn">Log Out</button>
