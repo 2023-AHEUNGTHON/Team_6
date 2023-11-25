@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import profileImg from "../img/profile-img.png";
-
 import goBackBtn from "../img/go-back-btn.png";
 import Footer from "../components/Footer";
 import DropDown from "../components/DropDown";
+import axios from "axios";
 
 import { Navigate, useNavigate } from "react-router-dom";
 
@@ -19,11 +19,63 @@ export default function MyPageEdit() {
   const [career, setCareer] = useState("Web");
   const [project, setProject] = useState("Web");
   const [date, setDate] = useState("2023년 11월 15일 ~ 2023년 11월 25일");
+
   const [edit, setEdit] = useState(false);
   const [textAreaValue, setTextAreaValue] = useState("");
 
   const [selectedProject, setSelectedProject] = useState(null);
   const [selectedCareer, setSelectedCareer] = useState(null);
+
+  // 마이페이지 조회
+  useEffect(() => {
+    const userId = localStorage.getItem("user_id");
+    if (userId) {
+      fetchUserData(userId);
+    }
+  }, []);
+
+  const fetchUserData = async (userId) => {
+    try {
+      const response = await axios.get(
+        `https://port-0-team-6-be-cn1vmr2clpde5wws.sel5.cloudtype.app/userprofile/${userId}`
+      );
+
+      const userData = response.data;
+      // 전체 데이터 콘솔에 출력
+      console.log("User Data:", userData);
+
+      // 서버에서 받아온 데이터로 상태 업데이트
+      setName(userData.username);
+      setMajor(userData.major);
+      setUniv(userData.school);
+      setGrade(userData.grade);
+    } catch (error) {
+      console.error("Error fetching user data:", error);
+    }
+  };
+
+  // 마이페이지 수정
+  const handleSubmit = async () => {
+    const userId = localStorage.getItem("user_id");
+
+    if (userId) {
+      try {
+        const response = await axios.post(
+          "https://port-0-team-6-be-cn1vmr2clpde5wws.sel5.cloudtype.app/userprofile", // 해당 엔드포인트를 사용하여 데이터를 전송해야 합니다.
+          {
+            major: selectedCareer,
+            project: selectedProject,
+            date: "20231125",
+            id: userId,
+          }
+        );
+
+        console.log("Profile updated:", response.data);
+      } catch (error) {
+        console.error("Error updating profile:", error);
+      }
+    }
+  };
 
   // 진행 중인 프로젝트 분야
   const projectOptions = [
@@ -54,20 +106,6 @@ export default function MyPageEdit() {
     "Music",
     "etc",
   ];
-
-  //  선택한 정보를 userData 상태로 저장
-  const [userData, setUserData] = useState({
-    name: "",
-    major: "",
-    email: "",
-    grade: "",
-    univ: "",
-    project: "",
-    email: "",
-    startDate: "",
-    endDate: "",
-    career: "",
-  });
 
   const [startDateYear, setStartDateYear] = useState("");
   const [startDateMonth, setStartDateMonth] = useState("");
@@ -230,10 +268,6 @@ export default function MyPageEdit() {
               defaultOption=""
               onSelect={(option) => {
                 setSelectedCareer(option);
-                setUserData((prevUserData) => ({
-                  ...prevUserData,
-                  career: option,
-                }));
               }}
             />
           </div>
@@ -244,10 +278,6 @@ export default function MyPageEdit() {
               defaultOption=""
               onSelect={(option) => {
                 setSelectedProject(option);
-                setUserData((prevUserData) => ({
-                  ...prevUserData,
-                  project: option,
-                }));
               }}
             />
           </div>
@@ -306,7 +336,9 @@ export default function MyPageEdit() {
             </div>
           </div>
         </div>
-        <button className="complete-btn">완료</button>
+        <button className="complete-btn" onClick={handleSubmit}>
+          완료
+        </button>
       </MyPageEditWrap>
       <Footer />
     </>
