@@ -1,4 +1,4 @@
-import React from "react";
+import React,{useState} from 'react';
 import "./Mainpage.css";
 import mainLogo from "./../../img/mainLogo2.svg";
 import Polygon from "../../img/Polygon.png";
@@ -7,6 +7,7 @@ import Nav from "../../components/CommonNav";
 import Footer from "../../components/Footer";
 
 function Mainpage() {
+    const [modalVisible, setModalVisible] = useState(false);
   const categoryOptions = [
     "ProductManager",
     "Design",
@@ -35,7 +36,7 @@ function Mainpage() {
           <img className="logo2" src={mainLogo} />
         </div>
         <div className="search_wrap">
-          <div className="s_text">나와 맞는 팀원을 한번에 찾고 싶다면</div>
+          <div className="s_text" onClick={() => setModalVisible(true)} >나와 맞는 팀원을 한번에 찾고 싶다면</div>
           <div>
             <img className="s_img" src={Polygon} />
           </div>
@@ -57,6 +58,23 @@ function Mainpage() {
             </div>
           ))}
         </div>
+        {/* 모달창 */}
+        {modalVisible && (
+            <div className="modal">
+            {/* 모달창 내용 */}
+            <div className="modal-content">
+                {/* 모달창 닫기 버튼 */}
+                <span className="close" onClick={() => setModalVisible(false)}>
+                &times;
+                </span>
+                {/* 모달창 내용 추가 */}
+                {/* 예시: 모달창에 더 많은 정보를 추가하거나 원하는 내용을 표시하세요. */}
+                <div class="m_box">
+                    <div class="m_name">매칭 필터링</div>
+                </div>
+            </div>
+            </div>
+        )}
       </div>
       <Footer />
     </>

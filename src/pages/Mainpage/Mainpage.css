@@ -117,3 +117,50 @@
     line-height: 3.93488rem; /* 286.172% */
     cursor: pointer;
 }
+
+/* 모달 */
+.modal {
+    display: block; /* 모달을 보이게 함 */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* 반투명한 검은 배경 */
+  }
+  
+  .modal-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 51.75rem;
+    height: 33.6375rem;
+    transform: translate(-50%, -50%);
+    background-color: #FCFFF5;
+    border-radius: 1.875rem;
+  }
+  
+  .m_box{
+    border-radius: 1.875rem 1.875rem 0rem 0rem;
+    background:#FFE7C2;
+    width:100%;
+    margin:0;
+    text-align: left;
+    display:flex;
+    justify-content: space-between;
+    align-items: center;
+    align-items: left;
+
+  }
+
+  .m_name{
+    padding:5% 5% 5% 0;
+    
+  }
+  .close {
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 10px;
+    cursor: pointer;
+  }
