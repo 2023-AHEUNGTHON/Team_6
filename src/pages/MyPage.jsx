@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import profileImg from "../img/profile-img.png";
 import editBtn from "../img/edit-btn.png";
 import goBackBtn from "../img/go-back-btn.png";
 import Footer from "../components/Footer";
+import axios from "axios";
 
 import { Navigate, useNavigate } from "react-router-dom";
 
@@ -17,6 +18,36 @@ export default function MyPage() {
   const [career, setCareer] = useState("Web");
   const [project, setProject] = useState("Web");
   const [date, setDate] = useState("2023년 11월 15일 ~ 2023년 11월 25일");
+
+  useEffect(() => {
+    const userId = localStorage.getItem("user_id");
+    if (userId) {
+      fetchUserData(userId);
+    }
+  }, []);
+
+  const fetchUserData = async (userId) => {
+    try {
+      const response = await axios.get(
+        `https://port-0-team-6-be-cn1vmr2clpde5wws.sel5.cloudtype.app/userprofile/${userId}`
+      );
+
+      const userData = response.data;
+      // 전체 데이터 콘솔에 출력
+      console.log("User Data:", userData);
+
+      // 서버에서 받아온 데이터로 상태 업데이트
+      setName(userData.username);
+      setMajor(userData.major);
+      setUniv(userData.school);
+      setGrade(userData.grade);
+      setCareer(userData.major);
+      setProject(userData.project);
+      setDate(userData.available);
+    } catch (error) {
+      console.error("Error fetching user data:", error);
+    }
+  };
 
   // textarea 포커스 해제
   const handleFocus = (event) => {

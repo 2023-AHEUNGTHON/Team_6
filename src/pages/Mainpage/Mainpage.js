@@ -1,31 +1,31 @@
-import React from 'react';
-import './Mainpage.css';
-import mainLogo from './../../img/mainLogo2.svg';
-import Polygon from '../../img/Polygon.png';
-import {useNavigate} from "react-router-dom";
-import Nav from "./../../components/CommonNav";
-import Footer from "./../../components/Footer";
+import React from "react";
+import "./Mainpage.css";
+import mainLogo from "./../../img/mainLogo2.svg";
+import Polygon from "../../img/Polygon.png";
+import { useNavigate } from "react-router-dom";
+import Nav from "../../components/CommonNav";
+import Footer from "../../components/Footer";
 
-function Mainpage(){
-    const categoryOptions = [
-        "ProductManager",
-        "Design",
-        "Photo",
-        "Web",
-        "Composing",
-        "Video",
-        "Ios",
-        "Lyric",
-        "Vocal",
-        "Android",
-        "Marketing",
-        "Dance",
-        "Server",
-        "Advertisement",
-        "etc"
-    ]
+function Mainpage() {
+  const categoryOptions = [
+    "ProductManager",
+    "Design",
+    "Photo",
+    "Web",
+    "Composing",
+    "Video",
+    "Ios",
+    "Lyric",
+    "Vocal",
+    "Android",
+    "Marketing",
+    "Dance",
+    "Server",
+    "Advertisement",
+    "etc",
+  ];
 
-    const navigate = useNavigate();
+  const navigate = useNavigate();
 
     return(
         <>
@@ -52,9 +52,9 @@ function Mainpage(){
                     }
                 </div>
             </div>
-            <Footer />
+        <Footer />
         </>
-    )
+  );
 }
 
 export default Mainpage;
