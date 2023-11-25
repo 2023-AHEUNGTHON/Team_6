@@ -73,6 +73,15 @@ const CategoryListWrap = styled.div`
   border-bottom-right-radius: 20px;
 `
 
+const ZeroMessage = styled.div`
+  height: 400px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 700;
+  font-size: 25px;
+`
+
 const UnderLine = styled.div`
   height: 1px;
   background-color: black;
@@ -89,12 +98,12 @@ const CategoryDetail = () => {
     const [data, setData] = useState([]);
 
     useEffect(() => {
-        api.get("readpost/",{ 'category' : category })
+        api.get(`readpost/${category}`)
             .then(response => {
                 setData(response.data);
             })
             .catch(error => {
-                alert('dㅔ러 ㅂ라생   ㅋㅋ')
+                alert('게시글을 불러올 수 없습니다.');
             })
     }, [])
 
@@ -113,26 +122,30 @@ const CategoryDetail = () => {
                     </WriteButtonWrap>
                 </CategoryTopWrap>
                 <CategoryListWrap>
-                    {data.map((list, idx) => (
-                        idx !== 0 ? (
-                            <React.Fragment key={list.id}>
-                                <UnderLine></UnderLine>
-                                <List
-                                    key={list.id}
-                                    title={list.title}
-                                    content={list.content}
-                                    onClick={() => navigate(`/${category}/${list.id}`)}
-                                />
-                            </React.Fragment>
-                        ) : (
-                            <List
-                                key={list.id}
-                                title={list.title}
-                                content={list.content}
-                                onClick={() => navigate(`/${category}/${list.id}`)}
-                            />
-                        )
-                    ))}
+                    { data.length === 0 ?
+                        <ZeroMessage>게시글이 존재하지 않습니다.</ZeroMessage>
+                    :   <>
+                        { data.map((list, idx) => (
+                                idx !== 0 ? (
+                                    <React.Fragment key={list.id}>
+                                        <UnderLine></UnderLine>
+                                        <List
+                                            key={list.id}
+                                            title={list.title}
+                                            content={list.content}
+                                            onClick={() => navigate(`/${category}/${list.id}`)}
+                                        />
+                                    </React.Fragment>
+                                ) : (
+                                    <List
+                                        key={list.id}
+                                        title={list.title}
+                                        content={list.content}
+                                        onClick={() => navigate(`/${category}/${list.id}`)}
+                                    />
+                                )
+                            ))}</>
+                    }
                 </CategoryListWrap>
 
             </DetailWrap>
